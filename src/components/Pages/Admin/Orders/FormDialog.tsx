@@ -27,14 +27,14 @@ interface IProps {
 }
 
 const validationSchema = yup.object().shape({
-  description: yup.string().required().min(3).max(50),
+  description: yup.string().required().min(3).max(500),
   quantity: yup.number().required().min(1).max(10000),
   amount: yup.number().required(),
   currency: yup.string().required().max(3),
   status: yup.string().required(),
   unitPrice: yup.number().required(),
   discount: yup.string().required(),
-  source: yup.string().required().max(50),
+  source: yup.string().required().max(30),
   isCompleted: yup.boolean()
 });
 
@@ -58,7 +58,7 @@ const FormDialog = memo((props: IProps) => {
   const formik = useFormikObservable<IOrder>({
     initialValues: {
       currency: 'BRL',
-      quantity: 0,
+      quantity: 1,
       status: 'placed' as any,
       source: 'WEB',
       amount: 0,
@@ -72,7 +72,8 @@ const FormDialog = memo((props: IProps) => {
         ...model,
         amount: Math.round(model?.amount * 100),
         discount: Math.round(model?.discount * 100),
-        unitPrice: Math.round(model?.unitPrice * 100)
+        unitPrice: Math.round(model?.unitPrice * 100),
+        quantity: model.quantity || 1
       };
       return orderService.save(data).pipe(
         tap(order => {
@@ -89,6 +90,7 @@ const FormDialog = memo((props: IProps) => {
       props.order.amount = props.order.amount / 100;
       props.order.discount = props.order.discount / 100;
       props.order.unitPrice = props.order.unitPrice / 100;
+      props.order.quantity = props.order.quantity || 0;
     }
     formik.setValues(props.order ?? formik.initialValues, false);
   }, [formik, props.order]);

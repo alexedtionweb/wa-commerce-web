@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   public login(email: string, password: string): Rx.Observable<void> {
-    return this.api.post('/auth/login', { email, password }).pipe(
+    return this.api.post('/admin/auth/login', { email, password }).pipe(
       switchMap(accessToken => this.tokenService.setToken(accessToken)),
       map(() => this.openLogin$.next(false))
     );
@@ -60,11 +60,11 @@ export class AuthService {
   }
 
   public sendResetPassword(email: string): Rx.Observable<void> {
-    return this.api.post('/auth/send-reset', { email });
+    return this.api.post('/admin/auth/send-reset', { email });
   }
 
   public resetPassword(token: string, password: string): Rx.Observable<void> {
-    return this.api.post('/auth/reset-password', { token, password });
+    return this.api.post('/admin/auth/reset-password', { token, password });
   }
 
   public openChangePassword(): void {
@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   public changePassword(currentPassword: string, newPassword: string): Rx.Observable<void> {
-    return this.api.post('/auth/change-password', {
+    return this.api.post('/admin/auth/change-password', {
       currentPassword,
       newPassword
     });
