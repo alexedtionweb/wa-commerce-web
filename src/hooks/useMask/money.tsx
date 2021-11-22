@@ -5,7 +5,7 @@ import { IMaskFunction } from '.';
 const money: IMaskFunction = {
   apply: (value: number | string) => {
     if (value === null || value === undefined || value === '') return '';
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value) || 0);
+    return new Intl.NumberFormat('pt-BR').format(Number(value) || 0);
   },
   clean: value => {
     value = (value || '').toString().replace(/[^\d,]/gi, '');

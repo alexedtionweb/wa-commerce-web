@@ -28,7 +28,7 @@ interface IProps {
 
 const validationSchema = yup.object().shape({
   description: yup.string().required().min(3).max(500),
-  quantity: yup.number().required().min(1).max(10000),
+  quantity: yup.number().required().max(10000),
   amount: yup.number().required(),
   currency: yup.string().required().max(3),
   status: yup.string().required(),
@@ -73,11 +73,11 @@ const FormDialog = memo((props: IProps) => {
         amount: Math.round(model?.amount * 100),
         discount: Math.round(model?.discount * 100),
         unitPrice: Math.round(model?.unitPrice * 100),
-        quantity: model.quantity || 1
+        quantity: parseInt(model.quantity as any) || 1
       };
       return orderService.save(data).pipe(
         tap(order => {
-          Toast.show(`seu pedido com ID ${model.id} foi salvo com sucesso `);
+          Toast.show(`seu pedido com ID ${order?.id} foi salvo com sucesso `);
           props.onComplete(order);
         }),
         logError(true)
